@@ -18,22 +18,55 @@ const tareaPost = async(req, resp) => {
     const body = req.body;
     const tarea = new Tarea(body);
     await tarea.save();
-      resp.json({
+    const { title, description, estado = "Pendiente", activo, createAt: creada } = tarea;
+      resp.status(201).json({
         msg: "Tarea Creada Correctamente",
-        tarea
-       
+        title,
+        description,
+        estado,
+        activo,
+        creada,
       });
 };
 
-const tareaPut = (req, resp) => {
-      resp.json({
-        msg: "put  API",
+const tareaPut = async(req, resp) => {
+    const body = req.body;
+    const tarea = new Tarea(body);
+    await tarea.save();
+    const {
+      title,
+      description,
+      estado = "Pendiente",
+      activo,
+      createAt: actualizada,
+    } = tarea;
+      resp.status(201).json({
+        msg: "Tarea actualizada corectamente",
+        title,
+        description,
+        estado,
+        activo,
+        actualizada,
       });
 };
 
-const tareaDelete = (req, resp) => {
-  resp.json({
-    msg: "delete  API",
+const tareaDelete = async(req, resp) => {
+  const {id} = req.params;
+  const tarea = await Tarea.findByIdAndUpdate(id, {activo: false});
+  const {
+    title,
+    description,
+    estado = "Pendiente",
+    activo,
+    createAt: eliminada,
+  } = tarea;
+  resp.status(200).json({
+    msg: "Tarea borrada correctamente",
+    title,
+    description,
+    estado,
+    activo,
+    eliminada
   });
 };
 

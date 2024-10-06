@@ -11,8 +11,12 @@ const tareaSchema = Schema({
   },
   estado: {
     type: "String",
+    default: "Pendiente",
     enum: ["Pendiente", "En Proceso", "Completada"],
-    default: "Pendiente"
+  },
+  activo: {
+    type: 'Boolean',
+    default: true,
   },
   createAt: {
     type: "Date",
