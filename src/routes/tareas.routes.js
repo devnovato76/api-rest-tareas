@@ -16,7 +16,12 @@ import { esEstadoValido, existeTareaPorId } from '../helpers/db-validator.js';
 const router = Router();
 
    router.get("/", tareasGet);
-   router.get("/:id", tareaGet);
+
+   router.get("/:id", [ check("id", "No es un ID válido").isMongoId(),
+       check("id").custom(existeTareaPorId),
+       validarCampos,],
+       tareaGet);
+
    router.post(
      "/",
      [
@@ -35,6 +40,7 @@ const router = Router();
      ],
      tareaPost
    );
+
    router.put(
      "/:id",
      [
@@ -45,11 +51,13 @@ const router = Router();
      ],
      tareaPut
    );
+   
    router.delete(
      "/:id",
      [
        check("id", "No es un ID válido").isMongoId(),
        check("id").custom(existeTareaPorId),
+       validarCampos,
      ],
      tareaDelete
    );
